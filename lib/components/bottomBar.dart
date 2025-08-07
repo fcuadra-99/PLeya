@@ -1,75 +1,34 @@
 import 'package:flutter/material.dart';
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
+class BottomBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemTapped;
 
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  double _currentSongProgress = 0.5;
-
-  void _onPlayerButtonPressed(String buttonName) {
-    print('$buttonName button pressed!');
-    // Add your logic here, e.g., calling a music service method
-  }
-
-  void _onSliderChanged(double newValue) {
-    setState(() {
-      _currentSongProgress = newValue;
-    });
-
-    // In a real app, you would use this to seek the audio to a new position.
-    print('Song progress changed to: $newValue');
-  }
+  const BottomBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min, // Make the row as small as possible
-      children: [
-        // Previous Button
-
-        // Slider
-        Expanded(
-          child: Slider(
-            value: _currentSongProgress,
-            min: 0.0,
-            max: 1.0,
-            activeColor: Colors.white,
-            inactiveColor: Colors.grey,
-            onChanged: _onSliderChanged,
-          ),
+    return BottomNavigationBar(
+      backgroundColor: Colors.transparent, 
+      elevation: 0,
+      currentIndex: selectedIndex,
+      onTap: onItemTapped,
+      selectedItemColor: Colors.amberAccent,
+      unselectedItemColor: Colors.white,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
-        IconButton(
-          icon: const Icon(
-            Icons.skip_previous, 
-            color: Colors.white, 
-            size: 30
-            ),
-                      onPressed: () {
-            _onPlayerButtonPressed('Previous');
-          },
+        BottomNavigationBarItem(
+          icon: Icon(Icons.smart_toy_outlined),
+          label: 'AI Bot',
         ),
-        // Play/Pause Button
-        IconButton(
-          icon: const Icon(
-            Icons.play_circle_fill,
-            color: Colors.white,
-            size: 50,
-          ),
-          onPressed: () {
-            _onPlayerButtonPressed('Play/Pause');
-          },
-        ),
-        // Next Button
-        IconButton(
-          icon: const Icon(Icons.skip_next, color: Colors.white, size: 30),
-          onPressed: () {
-            _onPlayerButtonPressed('Next');
-          },
-        ),
+        // Add more items here for other pages
       ],
     );
   }
